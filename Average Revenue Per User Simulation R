@@ -38,14 +38,16 @@ revenue<-function(arpu, acq, ch, n.cust){
 }
 
 #Now let's simulate 10k values from each of our distributions
+#Set seed to take reproducible results
+set.seed(1234)
 
 sim.arpu<-rnorm(10000, 7, arpu.sd)
 sim.acq<-rnorm(10000, 0.05, acq.sd)
 sim.ch<-rnorm(10000, 0.02, ch.sd)
 
 #We can then apply the function to these values to get a distribution for end of year revenue
+sim.rev<-revenue(sim.arpu, sim.acq, sim.ch,n.cust)
 
-sim.rev<-mapply(revenue, sim.arpu, sim.acq, sim.ch)
 
 summary(sim.rev)
 
