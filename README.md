@@ -1,1 +1,1 @@
-# anastasia_eksupno_fagito
+The branch Part 3 contains the 3 different scripts in SQL, Python & R. One can see the initial scripts provided and the updated ones for every case, with commit messages with suggestions and comments after reviewing the scripts.
