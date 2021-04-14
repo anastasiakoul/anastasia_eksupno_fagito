@@ -37,3 +37,47 @@ sns.boxplot(y=df2["Revenue"])
 plt.show()
 sns.boxplot(y=df2["Num of Orders"])
 plt.show()
+
+#After exploring the distribution plots & boxplots as well as the statistics set labels for the Frequence
+#(Number of orders per customer)(S,M,L)
+
+df2.loc[df2['Num of Orders']==1,'Freq_size']='S'
+df2.loc[(df2['Num of Orders']>=2)&(df2['Num of Orders']<=4),'Freq_size']='M'
+df2.loc[df2['Num of Orders']>=5,'Freq_size']='L'
+
+#After exploring the distribution plots & boxplots as well as the statistics set labels for the Revenue per Customer(S,M,L)
+
+df2.loc[df2['Revenue']<=15,'Revenue_size']='S'
+df2.loc[(df2['Revenue']>15)&(df2['Revenue']<=30),'Revenue_size']='M'
+df2.loc[df2['Revenue']>30,'Revenue_size']='L'
+
+#Combine the above categories to create 5 different customer segments
+
+df2.loc[(df2['Revenue_size']=='L')&(df2['Freq_size']=='L'),'Segment']='Segment1'
+df2.loc[(df2['Revenue_size']=='L')&((df2['Freq_size']=='M')|(df2['Freq_size']=='S')),'Segment']='Segment2'
+df2.loc[(df2['Revenue_size']=='M')&((df2['Freq_size']=='L')|(df2['Freq_size']=='M')|(df2['Freq_size']=='S')),'Segment']='Segment3'
+df2.loc[(df2['Revenue_size']=='S')&((df2['Freq_size']=='M')|(df2['Freq_size']=='L')),'Segment']='Segment4'
+df2.loc[(df2['Revenue_size']=='S')&(df2['Freq_size']=='S'),'Segment']='Segment5'
+
+df2.to_csv('df2.csv')
+
+
+x=df2[['Revenue','Num of Orders','Freq_size']].groupby('Freq_size').describe()
+df2[['Revenue','Num of Orders','Freq_size']].groupby('Freq_size').sum()
+df2[['Revenue','Num of Orders','Freq_size']].groupby('Freq_size').count()
+
+y=df2[['Revenue','Num of Orders','Revenue_size']].groupby('Revenue_size').describe()
+
+df2[['Revenue','Num of Orders','Revenue_size']].groupby('Revenue_size').count()
+
+z=df2[['Revenue','Num of Orders','Revenue_size','Freq_size']].groupby(['Revenue_size','Freq_size']).describe()
+df2[['Revenue','Num of Orders','Revenue_size','Freq_size']].groupby(['Revenue_size','Freq_size']).sum()
+
+df2[['Revenue','Num of Orders','Revenue_size','Freq_size']].groupby(['Revenue_size','Freq_size']).count()
+
+k=df2[['Breakfast_revenue','Healthy_revenue','Street_food_revenue','Italian_revenue','Creperie_revenue','Meat_revenue','Traditional_revenue','Ethnic_revenue','Sweets_revenue','Revenue_size','Freq_size']].groupby(['Revenue_size','Freq_size']).sum()
+
+
+
+
+
