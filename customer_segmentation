@@ -1,0 +1,39 @@
+import pandas as pd
+import seaborn as sns
+from matplotlib import pyplot as plt
+
+
+df = pd.read_excel (r'orders_jan.xlsx')
+#print (df)
+
+#Create new columns for the revenue of every cuisine_parent
+df = pd.DataFrame(df, columns=["order_id", "user_id","Basket","shop_id","city","cuisine_parent"])
+df['Breakfast_revenue']= df.loc[df["cuisine_parent"]=='Breakfast',"Basket"]
+df['Healthy_revenue']= df.loc[df["cuisine_parent"]=='Healthy / Other',"Basket"]
+df['Street_food_revenue']= df.loc[df["cuisine_parent"]=='Street food',"Basket"]
+df['Italian_revenue']= df.loc[df["cuisine_parent"]=='Italian',"Basket"]
+df['Creperie_revenue']= df.loc[df["cuisine_parent"]=='Creperie',"Basket"]
+df['Meat_revenue']= df.loc[df["cuisine_parent"]=='Meat',"Basket"]
+df['Traditional_revenue']= df.loc[df["cuisine_parent"]=='Traditional',"Basket"]
+df['Ethnic_revenue']= df.loc[df["cuisine_parent"]=='Ethnic',"Basket"]
+df['Sweets_revenue']= df.loc[df["cuisine_parent"]=='Sweets',"Basket"]
+
+#The initial df is in order_id level - every row represents 1 row. Multiple rows per customer
+#Aggregate df so that the output will be in user_id (customer) level. Calculate sum/count of the columns accordingly
+
+df2 = df.groupby('user_id').agg({'order_id':'count','Basket':'sum','shop_id':'nunique','Breakfast_revenue':'sum','Healthy_revenue':'sum','Street_food_revenue':'sum','Italian_revenue':'sum','Creperie_revenue':'sum','Meat_revenue':'sum','Traditional_revenue':'sum','Ethnic_revenue':'sum','Sweets_revenue':'sum'}).reset_index().rename(columns={'order_id':'Num of Orders','Basket':'Revenue','shop_id':'Num of shops'})
+
+#Data exploration - Get statistics of the data set
+df2[['Revenue','Num of Orders']].describe()
+
+#Get the distribution plot of Revenue & Number of Orders
+sns.distplot(df2['Revenue'])
+plt.show()
+sns.distplot(df2['Num of Orders'])
+plt.show()
+
+#Get the boxplots of Revenue & Number of Orders
+sns.boxplot(y=df2["Revenue"])
+plt.show()
+sns.boxplot(y=df2["Num of Orders"])
+plt.show()
